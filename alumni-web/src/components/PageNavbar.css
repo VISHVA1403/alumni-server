@@ -1,0 +1,16 @@
+/* PageNavbar.css */
+.navbar {
+    padding: 10px;
+}
+
+.navbar-brand {
+    margin-left: 20px;
+}
+
+.navbar-nav {
+    margin-right: 20px;
+}
+
+.nav-link {
+    font-size: 18px; /* Adjust the font size to make the text larger */
+}
