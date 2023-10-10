@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import * as XLSX from "xlsx";
-import { Button, Form, Modal } from "react-bootstrap";
 
 const BulkRegister = () => {
   const [file, setFile] = useState(null);
@@ -41,8 +40,9 @@ const BulkRegister = () => {
   };
 
   const handleAdminConfirmation = () => {
-    if (adminPassword === "your_admin_password") {
+    if (adminPassword === "pugalkmc") {
       setRegistrationInProgress(true);
+      bulkRegisterData();
     } else {
       alert("Invalid admin password. Please try again.");
     }
@@ -63,8 +63,19 @@ const BulkRegister = () => {
           bloodGroup: studentData.bloodGroup,
         };
 
+        // const response = fetch(``, {
+        //   method: 'POST',
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify(requestBody),
+        // });
+
+        var response = {ok:200}
+        console.log(response)
+
         // Make an API call to register the student
-        try {
+        if (response.ok || true) {
           // Simulating a successful registration with a timeout
           setTimeout(() => {
             setRegistrationStatus((prevStatus) => {
@@ -73,8 +84,8 @@ const BulkRegister = () => {
               return updatedStatus;
             });
           }, 1000);
-        } catch (error) {
-          console.error("Error during registration:", error);
+        } else {
+          console.error("Error during registration:", response.message);
           setRegistrationStatus((prevStatus) => {
             const updatedStatus = [...prevStatus];
             updatedStatus[i] = "error";
@@ -120,7 +131,7 @@ const BulkRegister = () => {
       ],
     ];
 
-    createAndDownloadExcelFile(templateData, "registration_template.xlsx");
+    createAndDownloadExcelFile(templateData, "Bulk_Registration_Template.xlsx");
   };
 
   // Function to create and download the errored data Excel file
@@ -137,11 +148,11 @@ const BulkRegister = () => {
       <h2 className="text-center">Bulk Registration</h2>
 
       <div>
-        <p>Download the Xl registration template by clicking the below button</p>
+        <p>Download the XL registration template by clicking the below button</p>
         <button type="button" className="btn btn-secondary mb-3" onClick={downloadTemplate}>Download Template</button>
       </div>
 
-      <form action="/register" method="post">
+      <form>
         <div className="row">
           <div className="col-md-8">
             <label htmlFor="file">Upload Excel file:</label>
@@ -166,7 +177,7 @@ const BulkRegister = () => {
         </div>
 
         <button
-          type="submit"
+          type="button"
           className="btn btn-primary mb-2 mt-3"
           onClick={handleAdminConfirmation}
         >
