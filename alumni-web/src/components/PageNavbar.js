@@ -11,7 +11,7 @@ const PageNavbar = () => {
     };
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light"> {/* Change background color */}
+        <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom"> {/* Change background color */}
             <a className="navbar-brand" href="/">Alumni Portal</a>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
