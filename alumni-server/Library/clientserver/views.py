@@ -32,7 +32,7 @@ class RegisterAPIView(APIView):
 class LoginAPIView(APIView):
     
     def post(self, request):
-        # Assuming the username and password are sent in the request data
+
         username = request.data.get('username')
         password = request.data.get('password')
 
@@ -47,13 +47,11 @@ class LoginAPIView(APIView):
         if not user.check_password(password):
             return Response({'error': 'Invalid password'}, status=HTTP_400_BAD_REQUEST)
 
-        # Generate tokens
+
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
 
-        # You can also add additional claims to the token if needed
-        # For example:
-        # access_token['custom_claim'] = 'some value'
+
 
         return Response({
             'access_token': access_token,
