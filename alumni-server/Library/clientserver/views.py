@@ -4,8 +4,6 @@ from rest_framework import status, generics
 
 from .serializers import RegisterSerializer, LoginSerializer
 from django.contrib.auth.models import User
-
-
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -29,3 +27,4 @@ class LoginAPIView(generics.GenericAPIView):
             token = RefreshToken.for_user(user)
             return Response({'token': str(token.access_token)}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    

@@ -2,11 +2,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-<<<<<<< HEAD
-    <footer className="bg-dark text-light text-center py-3 mt-5">
-=======
     <footer className="bg-dark text-light text-center py-3">
->>>>>>> selva
       <div className="container">
         {/* <div className="row">
           <div className="col-md-4">
@@ -42,11 +38,7 @@ const Footer = () => {
         </div> */}
         <div className="row mt-3">
           <div className="col">
-<<<<<<< HEAD
-            <p>&copy; {new Date().getFullYear()} Alumni Portal | All Rights Reserved</p>
-=======
             <p>&copy; {new Date().getFullYear()} Alumni Association | All Rights Reserved</p>
->>>>>>> selva
           </div>
         </div>
       </div>

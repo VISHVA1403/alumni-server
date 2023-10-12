@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const SingleRegister = () => {
-  const [formData, setFormData] = useState({
-    first_name: "",
-    last_name: "",
-    username:"",
-    email: ""
+   const [formData, setFormData] = useState({
+    first_name: '',
+    last_name: '',
+    username: '',
+    email: '',
   });
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,32 +19,28 @@ const SingleRegister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const response = await fetch("/single-register", {
-        method: "POST",
+      const response = await fetch('/alumni/register', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       });
-
-      if (response.ok ) {
-        // Clear form data
-        setFormData({
-          first_name: "",
-          last_name: "",
-          username:"",
-          email: ""
-        });
-      } else {
+  
+      if (response.ok) {
         const data = await response.json();
-        alert("Registration Failed!")
+        console.log('Registration Successful!', data);
+      } else {
+        const errorData = await response.text();
+        console.error('Registration Failed:', errorData);
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
     }
   };
+  
 
   return (
     <div className="container mt-5">
@@ -83,13 +78,13 @@ const SingleRegister = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="mobile_number" className="form-label">
+                  <label htmlFor="username" className="form-label">
                     Username:
                   </label>
                   <input
-                    type="tel"
-                    id="mobile_number"
-                    name="mobile_number"
+                    type="text"
+                    id="username"
+                    name="username"
                     value={formData.username}
                     onChange={handleChange}
                     className="form-control"
