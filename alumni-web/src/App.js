@@ -13,9 +13,10 @@ const App = () => {
               <PageNavbar/>
               <Routes>
                 <Route path='/login' element={<LoginPage/>}></Route>
-                <Route path='/find-people' element={<People/>}></Route>
+                {/* <Route path='/find-people' element={<People/>}></Route> */}
                 <Route path='/single-register' element={<SingleRegister/>}></Route>
                 <Route path='/bulk-register' element={<BulkRegister/>}></Route>
+                <Route path="*" element={<People/>}></Route>
               </Routes>
               <Footer/>
         </BrowserRouter>
