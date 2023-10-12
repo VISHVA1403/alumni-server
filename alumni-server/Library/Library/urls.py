@@ -18,6 +18,13 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+
+
+from clientserver.views import RegisterAPIView,LoginAPIView
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('alumni/register/', RegisterAPIView.as_view(), name='auth_register'),
+    path('alumni/login/', LoginAPIView.as_view(), name='auth_login'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
