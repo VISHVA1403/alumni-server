@@ -24,12 +24,10 @@ const BulkRegister = () => {
           skipHeader: 1,
         });
         const formattedData = jsonData.map((row) => ({
-          firstName: row[0],
-          lastName: row[1],
-          email: row[2],
-          mobileNumber: row[3],
-          registerNumber: row[4],
-          bloodGroup: row[5],
+          first_name: row[0],
+          last_name: row[1],
+          username: row[2],
+          email: row[3],
           registrationStatus: "awaiting",
         }));
         setDataPreview(formattedData);
@@ -48,34 +46,35 @@ const BulkRegister = () => {
     }
   };
 
-  const bulkRegisterData = () => {
+  const bulkRegisterData = async () => {
     for (let i = 0; i < dataPreview.length; i++) {
       if (registrationStatus[i] === "awaiting") {
         const studentData = dataPreview[i];
 
         // Construct the request payload based on your API requirements
         const requestBody = {
-          firstName: studentData.firstName,
-          lastName: studentData.lastName,
+          first_name: studentData.first_name,
+          last_name: studentData.last_name,
+          username: studentData.username,
           email: studentData.email,
-          mobileNumber: studentData.mobileNumber,
-          registerNumber: studentData.registerNumber,
-          bloodGroup: studentData.bloodGroup,
+          password:"kit@123",
+          password1:"kit@123"
         };
 
-        // const response = fetch(``, {
-        //   method: 'POST',
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify(requestBody),
-        // });
+        console.log(requestBody)
+        const response = await fetch(`http://127.0.0.1:8000/alumni/register/`, {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        });
 
-        var response = {ok:200}
+        // var response = {ok:200}
         console.log(response)
 
         // Make an API call to register the student
-        if (response.ok || true) {
+        if (response.ok) {
           // Simulating a successful registration with a timeout
           setTimeout(() => {
             setRegistrationStatus((prevStatus) => {
@@ -103,15 +102,12 @@ const BulkRegister = () => {
     worksheet["!cols"] = [
       { width: 12 }, // First Name
       { width: 12 }, // Last Name
-      { width: 20 }, // Email
-      { width: 15 }, // Mobile Number
-      { width: 20 }, // Register Number
-      { width: 15 }, // Blood Group
+      { width: 15 }, // username
+      { width: 20 } // Email
     ];
 
-    // Center-align Mobile Number and Blood Group columns
-    worksheet["!cols"][3].s = { alignment: { horizontal: "center" } }; // Mobile Number
-    worksheet["!cols"][5].s = { alignment: { horizontal: "center" } }; // Blood Group
+    // worksheet["!cols"][3] = { alignment: { horizontal: "center" } };
+    // worksheet["!cols"][5] = { alignment: { horizontal: "center" } };
 
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
@@ -124,10 +120,8 @@ const BulkRegister = () => {
       [
         "First Name",
         "Last Name",
-        "Email",
-        "Mobile Number",
-        "Register Number",
-        "Blood Group",
+        "username",
+        "Email"
       ],
     ];
 
@@ -193,22 +187,18 @@ const BulkRegister = () => {
               <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
+                <th>username</th>
                 <th>Email</th>
-                <th>Mobile Number</th>
-                <th>Register Number</th>
-                <th>Blood Group</th>
                 <th>Status</th>
               </tr>
             </thead>
             <tbody>
               {dataPreview.map((entry, index) => (
                 <tr key={index}>
-                  <td>{entry.firstName}</td>
-                  <td>{entry.lastName}</td>
+                  <td>{entry.first_name}</td>
+                  <td>{entry.last_name}</td>
+                  <td>{entry.username}</td>
                   <td>{entry.email}</td>
-                  <td>{entry.mobileNumber}</td>
-                  <td>{entry.registerNumber}</td>
-                  <td>{entry.bloodGroup}</td>
                   <td>{registrationStatus[index]}</td>
                 </tr>
               ))}

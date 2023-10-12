@@ -3,12 +3,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const SingleRegister = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    mobileNumber: "",
-    registerNumber: "",
-    bloodGroup: "",
+    first_name: "",
+    last_name: "",
+    username:"",
+    email: ""
   });
 
 
@@ -35,12 +33,10 @@ const SingleRegister = () => {
       if (response.ok ) {
         // Clear form data
         setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          mobileNumber: "",
-          registerNumber: "",
-          bloodGroup: "",
+          first_name: "",
+          last_name: "",
+          username:"",
+          email: ""
         });
       } else {
         const data = await response.json();
@@ -59,28 +55,42 @@ const SingleRegister = () => {
             <div className="card-body">
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label htmlFor="firstName" className="form-label">
+                  <label htmlFor="first_name" className="form-label">
                     First Name:
                   </label>
                   <input
                     type="text"
-                    id="firstName"
-                    name="firstName"
-                    value={formData.firstName}
+                    id="first_name"
+                    name="first_name"
+                    value={formData.first_name}
                     onChange={handleChange}
                     className="form-control"
                     required
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="lastName" className="form-label">
+                  <label htmlFor="last_name" className="form-label">
                     Last Name:
                   </label>
                   <input
                     type="text"
-                    id="lastName"
-                    name="lastName"
-                    value={formData.lastName}
+                    id="last_name"
+                    name="last_name"
+                    value={formData.last_name}
+                    onChange={handleChange}
+                    className="form-control"
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="mobile_number" className="form-label">
+                    Username:
+                  </label>
+                  <input
+                    type="tel"
+                    id="mobile_number"
+                    name="mobile_number"
+                    value={formData.username}
                     onChange={handleChange}
                     className="form-control"
                     required
@@ -95,48 +105,6 @@ const SingleRegister = () => {
                     id="email"
                     name="email"
                     value={formData.email}
-                    onChange={handleChange}
-                    className="form-control"
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="mobileNumber" className="form-label">
-                    Mobile Number:
-                  </label>
-                  <input
-                    type="tel"
-                    id="mobileNumber"
-                    name="mobileNumber"
-                    value={formData.mobileNumber}
-                    onChange={handleChange}
-                    className="form-control"
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="registerNumber" className="form-label">
-                    Register Number:
-                  </label>
-                  <input
-                    type="text"
-                    id="registerNumber"
-                    name="registerNumber"
-                    value={formData.registerNumber}
-                    onChange={handleChange}
-                    className="form-control"
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="bloodGroup" className="form-label">
-                    Blood Group:
-                  </label>
-                  <input
-                    type="text"
-                    id="bloodGroup"
-                    name="bloodGroup"
-                    value={formData.bloodGroup}
                     onChange={handleChange}
                     className="form-control"
                     required
