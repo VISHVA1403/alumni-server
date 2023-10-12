@@ -20,10 +20,10 @@ class Skillset(models.Model):
 
 
 
-class Working(models.Model):
+class CurrentWork(models.Model):
     designation=models.CharField(max_length=256,blank=True,null=True)
     sector=models.CharField(max_length=256,blank=True,null=True)
-    tenure=models.IntegerField(max_length=3,blank=True,null=True)
+    tenure=models.IntegerField(blank=True,null=True)
     companyName=models.CharField(max_length=256,blank=True,null=True)
     joinedDate=models.DateTimeField(auto_now_add=False)
 
@@ -45,7 +45,7 @@ class UserProfile(models.Model):
     contactNumber=models.CharField(max_length=20,null=True,blank=True)
     profilePicture=models.ImageField(upload_to='uploads/profile_pictures/')
     skillSet=models.ForeignKey(Skillset,on_delete=models.CASCADE)
-    working=models.ForeignKey(Working,on_delete=models.CASCADE)
+    working=models.ForeignKey(CurrentWork,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
