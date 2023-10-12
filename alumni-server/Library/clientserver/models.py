@@ -10,10 +10,15 @@ class Certifications(models.Model):
     description=models.TextField(max_length=1000)
     dateOfCertification=models.DateField()
 
+
+
+
 class Skillset(models.Model):
     skill=models.CharField(max_length=256)
     level=models.CharField(max_length=32,blank=True,null=True)
     certificate=models.ForeignKey(Certifications,on_delete=models.CASCADE)
+
+
 
 class Working(models.Model):
     designation=models.CharField(max_length=256,blank=True,null=True)
@@ -22,11 +27,16 @@ class Working(models.Model):
     companyName=models.CharField(max_length=256,blank=True,null=True)
     joinedDate=models.DateTimeField(auto_now_add=False)
 
+
+
+
 class Location(models.Model):
     city=models.CharField(max_length=256,null=True,blank=True)
     state=models.CharField(max_length=256,null=True,blank=True)
     country=models.CharField(max_length=256,null=True,blank=True)
     pincode=models.CharField(max_length=26,null=True,blank=True)
+
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -40,6 +50,8 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
     
+
+
 
 class Posting(models.Model):
     pass
