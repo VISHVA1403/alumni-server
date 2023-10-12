@@ -10,7 +10,6 @@ import LoginPage from './components/Login/LoginPage';
 const App = () => {
     return (
         <BrowserRouter>
-              <Navbar/>
               <PageNavbar/>
               <Routes>
                 <Route path='/login' element={<LoginPage/>}></Route>
