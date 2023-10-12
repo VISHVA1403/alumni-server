@@ -144,17 +144,17 @@ const BulkRegister = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <h2 className="text-center">Bulk Registration</h2>
-
+    <div className="container mt-5 text-center"> {/* Added 'text-center' class */}
+  
       <div>
         <p>Download the XL registration template by clicking the below button</p>
         <button type="button" className="btn btn-secondary mb-3" onClick={downloadTemplate}>Download Template</button>
       </div>
 
-      <form>
-        <div className="row">
-          <div className="col-md-8">
+      <h2 className="text-center">Bulk Registration</h2>
+      <form className="border">
+        <div className="row justify-content-center">
+          <div className="col-md-5 mt-2">
             <label htmlFor="file">Upload Excel file:</label>
             <input
               type="file"
@@ -164,7 +164,7 @@ const BulkRegister = () => {
               onChange={handleFileUpload}
             />
           </div>
-          <div className="col-md-8 mt-3">
+          <div className="col-md-5 mt-2">
             <label htmlFor="admin_password">Admin Password:</label>
             <input
               type="password"
@@ -175,7 +175,7 @@ const BulkRegister = () => {
             />
           </div>
         </div>
-
+  
         <button
           type="button"
           className="btn btn-primary mb-2 mt-3"
@@ -184,10 +184,10 @@ const BulkRegister = () => {
           Start Registration
         </button>
       </form>
-
+  
       {dataPreview.length > 0 && (
         <div>
-          <h3 className="text-center">Data Preview</h3>
+          <h3 className="text-center mt-4">Data Preview</h3>
           <table className="table table-striped">
             <thead>
               <tr>
@@ -216,14 +216,14 @@ const BulkRegister = () => {
           </table>
         </div>
       )}
-
+  
       {registrationInProgress && (
         <div className="text-center mt-5">
           <p>Registration is in progress. Please wait...</p>
         </div>
       )}
     </div>
-  );
+  );  
 };
 
 export default BulkRegister;
