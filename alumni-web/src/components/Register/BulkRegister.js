@@ -56,13 +56,11 @@ const BulkRegister = () => {
           first_name: studentData.first_name,
           last_name: studentData.last_name,
           username: studentData.username,
-          email: studentData.email,
-          password:"kit@123",
-          password1:"kit@123"
+          email: studentData.email
         };
 
         console.log(requestBody)
-        const response = await fetch(`http://127.0.0.1:8000/alumni/register/`, {
+        const response = await fetch(`http://localhost:8000/alumni/register/`, {
           method: 'POST',
           headers: {
             "Content-Type": "application/json",

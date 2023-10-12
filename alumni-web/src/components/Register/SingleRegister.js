@@ -22,16 +22,19 @@ const SingleRegister = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("/single-register", {
+      const response = await fetch("http://localhost:8000/alumni/register/", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", // Set the Content-Type to JSON
         },
         body: JSON.stringify(formData),
       });
 
-      if (response.ok ) {
+      if (response.ok) {
         // Clear form data
+        // const data = await response.json();
+        alert("Registration Success!")
+
         setFormData({
           first_name: "",
           last_name: "",
@@ -83,13 +86,13 @@ const SingleRegister = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="mobile_number" className="form-label">
+                  <label htmlFor="username" className="form-label">
                     Username:
                   </label>
                   <input
                     type="tel"
-                    id="mobile_number"
-                    name="mobile_number"
+                    id="username"
+                    name="username"
                     value={formData.username}
                     onChange={handleChange}
                     className="form-control"
