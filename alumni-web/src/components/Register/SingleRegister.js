@@ -2,11 +2,16 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const SingleRegister = () => {
+  var [ usernameError , setUsernameError ] = useState('')
+  var [ emailError , setEmailError ] = useState('')
+
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
     username:"",
-    email: ""
+    email: "",
+    password: "kit@123",
+    password2: "kit@123"
   });
 
 
@@ -21,26 +26,40 @@ const SingleRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setEmailError('')
+    setUsernameError('')
     try {
-      const response = await fetch("/single-register", {
+      const response = await fetch("http://localhost:8000/alumni/register/", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", // Set the Content-Type to JSON
         },
         body: JSON.stringify(formData),
       });
 
-      if (response.ok ) {
+      if (response.ok) {
         // Clear form data
+        // const data = await response.json();
+        alert("Registration Success!")
+
         setFormData({
           first_name: "",
           last_name: "",
           username:"",
-          email: ""
+          email: "",
+          password: "kit@123",
+          password2: "kit@123"
         });
       } else {
         const data = await response.json();
-        alert("Registration Failed!")
+        console.log(data)
+        if ('usernam' in data){
+          setUsernameError(data.username[0]);
+        }
+        else if ('email' in data){
+          setEmailError(data.email[0])
+        }
+        
       }
     } catch (error) {
       console.error("Error:", error);
@@ -83,18 +102,19 @@ const SingleRegister = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="mobile_number" className="form-label">
+                  <label htmlFor="username" className="form-label">
                     Username:
                   </label>
                   <input
                     type="tel"
-                    id="mobile_number"
-                    name="mobile_number"
+                    id="username"
+                    name="username"
                     value={formData.username}
                     onChange={handleChange}
                     className="form-control"
                     required
                   />
+                  <p className="text-danger">{usernameError}</p>
                 </div>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">
@@ -109,6 +129,7 @@ const SingleRegister = () => {
                     className="form-control"
                     required
                   />
+                  <p className="text-danger">{emailError}</p>
                 </div>
                 <button type="submit" className="btn btn-primary">
                   Submit

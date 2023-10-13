@@ -1,0 +1,5 @@
+/* Add this CSS to your BulkRegister.css file */
+.table-scrollable {
+  max-height: 300px; /* Set the maximum height as needed */
+  overflow-y: auto;
+}
