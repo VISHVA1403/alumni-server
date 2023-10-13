@@ -61,36 +61,31 @@ const BulkRegister = () => {
           password1:"kit@123"
         };
 
-        console.log(requestBody)
-        const response = await fetch(`http://127.0.0.1:8000/alumni/register/`, {
-          method: 'POST',
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        });
+        try {
+          const response = await fetch('http://127.0.0.1:8000/alumni/register/', {
+              method: 'POST',
+              body: JSON.stringify(requestBody),
+              credentials: 'include',
+          });
+          console.log(response)
+      
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+      
+          // Handle successful response
+      
+      } catch (error) {
+          console.error('Error:', error);
+          // Handle error
+      }
 
         // var response = {ok:200}
-        console.log(response)
-
+        
         // Make an API call to register the student
-        if (response.ok) {
+        
           // Simulating a successful registration with a timeout
-          setTimeout(() => {
-            setRegistrationStatus((prevStatus) => {
-              const updatedStatus = [...prevStatus];
-              updatedStatus[i] = "completed";
-              return updatedStatus;
-            });
-          }, 1000);
-        } else {
-          console.error("Error during registration:", response.message);
-          setRegistrationStatus((prevStatus) => {
-            const updatedStatus = [...prevStatus];
-            updatedStatus[i] = "error";
-            return updatedStatus;
-          });
-        }
+      
       }
     }
   };

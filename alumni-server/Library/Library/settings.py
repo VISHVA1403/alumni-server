@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'clientserver',
     'rest_framework',
     "rest_framework.authtoken",
+    'corsheaders',
 ]
 
 # SIMPLE_JWT = {
@@ -78,7 +79,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'Library.urls'
 
