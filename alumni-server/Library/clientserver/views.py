@@ -14,8 +14,6 @@ from rest_framework import status
 class RegisterView(APIView):
 
     def post(self, request):
-        request.data['password'] = 'kit@123'
-        request.data['password2'] = 'kit@123'
         serializer = UserSerializer(data=request.data)
 
         if serializer.is_valid():

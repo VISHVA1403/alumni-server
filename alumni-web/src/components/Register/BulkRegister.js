@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import * as XLSX from "xlsx";
+import "./BulkRegister.css";
 
 const BulkRegister = () => {
   const [file, setFile] = useState(null);
   const [dataPreview, setDataPreview] = useState([]);
   const [registrationStatus, setRegistrationStatus] = useState([]);
+  const [ progressMessage , setProgressMessage ] = useState("")
+  const [ progressColor , setProgressColor ] = useState('text-success')
   const [adminPassword, setAdminPassword] = useState("");
-  const [registrationInProgress, setRegistrationInProgress] = useState(false);
   const [erroredData, setErroredData] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
@@ -39,7 +41,6 @@ const BulkRegister = () => {
 
   const handleAdminConfirmation = () => {
     if (adminPassword === "pugalkmc") {
-      setRegistrationInProgress(true);
       bulkRegisterData();
     } else {
       alert("Invalid admin password. Please try again.");
@@ -47,6 +48,7 @@ const BulkRegister = () => {
   };
 
   const bulkRegisterData = async () => {
+    setProgressMessage("Registration in progress , wait some moment to complete")
     for (let i = 0; i < dataPreview.length; i++) {
       if (registrationStatus[i] === "awaiting") {
         const studentData = dataPreview[i];
@@ -56,12 +58,14 @@ const BulkRegister = () => {
           first_name: studentData.first_name,
           last_name: studentData.last_name,
           username: studentData.username,
-          email: studentData.email
+          email: studentData.email,
+          password: "kit@123",
+          password2: "kit@123",
         };
 
-        console.log(requestBody)
+        console.log(requestBody);
         const response = await fetch(`http://localhost:8000/alumni/register/`, {
-          method: 'POST',
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
@@ -69,7 +73,7 @@ const BulkRegister = () => {
         });
 
         // var response = {ok:200}
-        console.log(response)
+        console.log(response);
 
         // Make an API call to register the student
         if (response.ok) {
@@ -83,13 +87,27 @@ const BulkRegister = () => {
           }, 1000);
         } else {
           console.error("Error during registration:", response.message);
+          setProgressColor('text-danger')
+          setProgressMessage(`Registration in progress , Error in some credentials`)
           setRegistrationStatus((prevStatus) => {
             const updatedStatus = [...prevStatus];
             updatedStatus[i] = "error";
+            erroredData.push(requestBody);
             return updatedStatus;
           });
         }
       }
+    }
+
+    if (erroredData.length) {
+      setProgressColor('text-danger')
+      setProgressMessage(`Registration completed\n
+      There are some registration ends with error in the data provided,\n
+      No of Error Credentials: ${erroredData.length}
+      Please download the Error Report`)
+    }
+    else {
+      setProgressMessage("Registration completed\nNo errors")
     }
   };
 
@@ -101,7 +119,7 @@ const BulkRegister = () => {
       { width: 12 }, // First Name
       { width: 12 }, // Last Name
       { width: 15 }, // username
-      { width: 20 } // Email
+      { width: 20 }, // Email
     ];
 
     // worksheet["!cols"][3] = { alignment: { horizontal: "center" } };
@@ -114,38 +132,45 @@ const BulkRegister = () => {
 
   // Function to create and download the registration template Excel file
   const downloadTemplate = () => {
-    const templateData = [
-      [
-        "First Name",
-        "Last Name",
-        "username",
-        "Email"
-      ],
-    ];
+    const templateData = [["First Name", "Last Name", "username", "Email"]];
 
     createAndDownloadExcelFile(templateData, "Bulk_Registration_Template.xlsx");
   };
 
   // Function to create and download the errored data Excel file
   const downloadErroredData = () => {
-    createAndDownloadExcelFile(erroredData, "errored_data.xlsx");
+    createAndDownloadExcelFile(erroredData, "registration_error_report.xlsx");
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
+  function colorValidate(text) {
+    if (text === "completed") {
+      return "text-success";
+    } else if (text === "error") {
+      return "text-danger";
+    } else {
+      return "text-primary";
+    }
+  }
+
   return (
-    <div className="container mt-5 text-center"> {/* Added 'text-center' class */}
-  
+    <div className="container mt-5 text-center">
       <div>
         <p>Download the XL registration template by clicking the below button</p>
-        <button type="button" className="btn btn-secondary mb-3" onClick={downloadTemplate}>Download Template</button>
+        <button
+          type="button"
+          className="btn btn-secondary mb-3"
+          onClick={downloadTemplate}
+        >
+          Download Template
+        </button>
       </div>
-
       <h2 className="text-center">Bulk Registration</h2>
-      <form className="border">
-        <div className="row justify-content-center">
+      <form className="border border-3">
+      <div className="row justify-content-center">
           <div className="col-md-5 mt-2">
             <label htmlFor="file">Upload Excel file:</label>
             <input
@@ -167,7 +192,6 @@ const BulkRegister = () => {
             />
           </div>
         </div>
-  
         <button
           type="button"
           className="btn btn-primary mb-2 mt-3"
@@ -176,42 +200,55 @@ const BulkRegister = () => {
           Start Registration
         </button>
       </form>
-  
       {dataPreview.length > 0 && (
-        <div>
-          <h3 className="text-center mt-4">Data Preview</h3>
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>username</th>
-                <th>Email</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {dataPreview.map((entry, index) => (
-                <tr key={index}>
-                  <td>{entry.first_name}</td>
-                  <td>{entry.last_name}</td>
-                  <td>{entry.username}</td>
-                  <td>{entry.email}</td>
-                  <td>{registrationStatus[index]}</td>
+        <div className="container mt-4">
+          <h3 className="text-center">Data Preview</h3>
+          <div className="table-responsive">
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th className="col-12 col-sm-2 col-md-2 col-lg-2">First Name</th>
+                  <th className="col-12 col-sm-2 col-md-2 col-lg-2">Last Name</th>
+                  <th className="col-12 col-sm-2 col-md-2 col-lg-2">Username</th>
+                  <th className="col-12 col-sm-4 col-md-4 col-lg-4">Email</th>
+                  <th className="col-12 col-sm-2 col-md-2 col-lg-2">Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+            </table>
+          </div>
+          <div className="table-responsive table-scrollable">
+            <table className="table table-striped">
+              <tbody className="scrollable-tbody">
+                {dataPreview.map((entry, index) => (
+                  <tr key={index} className="row">
+                    <td className="col-12 col-sm-2 col-md-2 col-lg-2">{entry.first_name}</td>
+                    <td className="col-12 col-sm-2 col-md-2 col-lg-2">{entry.last_name}</td>
+                    <td className="col-12 col-sm-2 col-md-2 col-lg-2">{entry.username}</td>
+                    <td className="col-12 col-sm-4 col-md-4 col-lg-4">{entry.email}</td>
+                    <td className={colorValidate(registrationStatus[index])+" col-12 col-sm-2 col-md-2 col-lg-2"}>
+                      {registrationStatus[index]}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
-  
-      {registrationInProgress && (
-        <div className="text-center mt-5">
-          <p>Registration is in progress. Please wait...</p>
+      <p className={progressColor+" mt-2"}>{progressMessage}</p>
+      {erroredData.length > 0 && (
+        <div className="container mt-4">
+          <button
+            type="button"
+            className="btn btn-danger mb-2 mt-3"
+            onClick={downloadErroredData}
+          >
+            Download Report
+          </button>
         </div>
       )}
     </div>
-  );  
+  );
 };
 
 export default BulkRegister;

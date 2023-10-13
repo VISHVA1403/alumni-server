@@ -2,11 +2,16 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const SingleRegister = () => {
+  var [ usernameError , setUsernameError ] = useState('')
+  var [ emailError , setEmailError ] = useState('')
+
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
     username:"",
-    email: ""
+    email: "",
+    password: "kit@123",
+    password2: "kit@123"
   });
 
 
@@ -21,6 +26,8 @@ const SingleRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setEmailError('')
+    setUsernameError('')
     try {
       const response = await fetch("http://localhost:8000/alumni/register/", {
         method: "POST",
@@ -39,11 +46,20 @@ const SingleRegister = () => {
           first_name: "",
           last_name: "",
           username:"",
-          email: ""
+          email: "",
+          password: "kit@123",
+          password2: "kit@123"
         });
       } else {
         const data = await response.json();
-        alert("Registration Failed!")
+        console.log(data)
+        if ('usernam' in data){
+          setUsernameError(data.username[0]);
+        }
+        else if ('email' in data){
+          setEmailError(data.email[0])
+        }
+        
       }
     } catch (error) {
       console.error("Error:", error);
@@ -98,6 +114,7 @@ const SingleRegister = () => {
                     className="form-control"
                     required
                   />
+                  <p className="text-danger">{usernameError}</p>
                 </div>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">
@@ -112,6 +129,7 @@ const SingleRegister = () => {
                     className="form-control"
                     required
                   />
+                  <p className="text-danger">{emailError}</p>
                 </div>
                 <button type="submit" className="btn btn-primary">
                   Submit
