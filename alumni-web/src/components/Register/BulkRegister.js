@@ -4,16 +4,17 @@ import * as XLSX from "xlsx";
 import "./BulkRegister.css";
 
 const BulkRegister = () => {
-  const [file, setFile] = useState(null);
   const [dataPreview, setDataPreview] = useState([]);
   const [registrationStatus, setRegistrationStatus] = useState([]);
-  const [ progressMessage , setProgressMessage ] = useState("")
-  const [ progressColor , setProgressColor ] = useState('text-success')
+  const [progressMessage, setProgressMessage] = useState("");
+  const [progressColor, setProgressColor] = useState("text-success");
   const [adminPassword, setAdminPassword] = useState("");
   const [erroredData, setErroredData] = useState([]);
-  const [showModal, setShowModal] = useState(false);
 
   const handleFileUpload = (e) => {
+    setProgressColor('text-success')
+    setErroredData([])
+    setProgressMessage('')
     const uploadedFile = e.target.files[0];
     if (uploadedFile) {
       const reader = new FileReader();
@@ -25,13 +26,22 @@ const BulkRegister = () => {
           header: 1,
           skipHeader: 1,
         });
-        const formattedData = jsonData.map((row) => ({
-          first_name: row[0],
-          last_name: row[1],
-          username: row[2],
-          email: row[3],
-          registrationStatus: "awaiting",
-        }));
+
+        const formattedData = [];
+        for (let i = 1; i < jsonData.length; i++) {
+          const row = jsonData[i];
+          // Check if the row is not entirely empty
+          if (row.some((cell) => cell && cell.trim() !== "")) {
+            formattedData.push({
+              first_name: row[0],
+              last_name: row[1],
+              username: row[2],
+              email: row[3],
+              registrationStatus: "awaiting",
+            });
+          }
+        }
+
         setDataPreview(formattedData);
         setRegistrationStatus(new Array(formattedData.length).fill("awaiting"));
       };
@@ -48,13 +58,15 @@ const BulkRegister = () => {
   };
 
   const bulkRegisterData = async () => {
-    setProgressMessage("Registration in progress , wait some moment to complete")
+    setProgressMessage(
+      "Registration in progress , wait some moment to complete"
+    );
     for (let i = 0; i < dataPreview.length; i++) {
       if (registrationStatus[i] === "awaiting") {
         const studentData = dataPreview[i];
 
         // Construct the request payload based on your API requirements
-        const requestBody = {
+        var requestBody = {
           first_name: studentData.first_name,
           last_name: studentData.last_name,
           username: studentData.username,
@@ -62,8 +74,6 @@ const BulkRegister = () => {
           password: "kit@123",
           password2: "kit@123",
         };
-
-        console.log(requestBody);
         const response = await fetch(`http://localhost:8000/alumni/register/`, {
           method: "POST",
           headers: {
@@ -71,9 +81,6 @@ const BulkRegister = () => {
           },
           body: JSON.stringify(requestBody),
         });
-
-        // var response = {ok:200}
-        console.log(response);
 
         // Make an API call to register the student
         if (response.ok) {
@@ -87,12 +94,18 @@ const BulkRegister = () => {
           }, 1000);
         } else {
           console.error("Error during registration:", response.message);
-          setProgressColor('text-danger')
-          setProgressMessage(`Registration in progress , Error in some credentials`)
+          setProgressColor("text-danger");
+          setProgressMessage(
+            `Registration in progress , Error in some credentials`
+          );
+          delete requestBody.password
+          delete requestBody.password2
+          var get = erroredData;
+          get.push(requestBody);
+          setErroredData(get);
           setRegistrationStatus((prevStatus) => {
             const updatedStatus = [...prevStatus];
             updatedStatus[i] = "error";
-            erroredData.push(requestBody);
             return updatedStatus;
           });
         }
@@ -100,50 +113,59 @@ const BulkRegister = () => {
     }
 
     if (erroredData.length) {
-      setProgressColor('text-danger')
+      setProgressColor("text-danger");
       setProgressMessage(`Registration completed\n
       There are some registration ends with error in the data provided,\n
       No of Error Credentials: ${erroredData.length}
-      Please download the Error Report`)
-    }
-    else {
-      setProgressMessage("Registration completed\nNo errors")
+      Please download the Error Report`);
+    } else {
+      setProgressMessage("Registration completed\nNo errors");
     }
   };
 
-  const createAndDownloadExcelFile = (data, fileName) => {
-    const worksheet = XLSX.utils.json_to_sheet(data);
+  const createAndDownloadExcelFile = (data, fileName, headers) => {
+    const worksheet = XLSX.utils.aoa_to_sheet([
+      headers,
+      ...data.map((row) => Object.values(row)),
+    ]);
 
-    // Set column widths
     worksheet["!cols"] = [
       { width: 12 }, // First Name
       { width: 12 }, // Last Name
       { width: 15 }, // username
-      { width: 20 }, // Email
+      { width: 30 }, // Email
     ];
-
-    // worksheet["!cols"][3] = { alignment: { horizontal: "center" } };
-    // worksheet["!cols"][5] = { alignment: { horizontal: "center" } };
-
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
     XLSX.writeFile(workbook, fileName);
   };
 
-  // Function to create and download the registration template Excel file
   const downloadTemplate = () => {
-    const templateData = [["First Name", "Last Name", "username", "Email"]];
-
-    createAndDownloadExcelFile(templateData, "Bulk_Registration_Template.xlsx");
+    const templateHeaders = [
+      "First Name",
+      "Last Name",
+      "Username",
+      "Email",
+    ];
+    createAndDownloadExcelFile(
+      [],
+      "Bulk_Registration_Template.xlsx",
+      templateHeaders
+    );
   };
 
-  // Function to create and download the errored data Excel file
   const downloadErroredData = () => {
-    createAndDownloadExcelFile(erroredData, "registration_error_report.xlsx");
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
+    const errorReportHeaders = [
+      "First Name",
+      "Last Name",
+      "Username",
+      "Email",
+    ];
+    createAndDownloadExcelFile(
+      erroredData,
+      "registration_error_report.xlsx",
+      errorReportHeaders
+    );
   };
 
   function colorValidate(text) {
@@ -159,7 +181,9 @@ const BulkRegister = () => {
   return (
     <div className="container mt-5 text-center">
       <div>
-        <p>Download the XL registration template by clicking the below button</p>
+        <p>
+          Download the XL registration template by clicking the below button
+        </p>
         <button
           type="button"
           className="btn btn-secondary mb-3"
@@ -170,7 +194,7 @@ const BulkRegister = () => {
       </div>
       <h2 className="text-center">Bulk Registration</h2>
       <form className="border border-3">
-      <div className="row justify-content-center">
+        <div className="row justify-content-center">
           <div className="col-md-5 mt-2">
             <label htmlFor="file">Upload Excel file:</label>
             <input
@@ -207,9 +231,15 @@ const BulkRegister = () => {
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th className="col-12 col-sm-2 col-md-2 col-lg-2">First Name</th>
-                  <th className="col-12 col-sm-2 col-md-2 col-lg-2">Last Name</th>
-                  <th className="col-12 col-sm-2 col-md-2 col-lg-2">Username</th>
+                  <th className="col-12 col-sm-2 col-md-2 col-lg-2">
+                    First Name
+                  </th>
+                  <th className="col-12 col-sm-2 col-md-2 col-lg-2">
+                    Last Name
+                  </th>
+                  <th className="col-12 col-sm-2 col-md-2 col-lg-2">
+                    Username
+                  </th>
                   <th className="col-12 col-sm-4 col-md-4 col-lg-4">Email</th>
                   <th className="col-12 col-sm-2 col-md-2 col-lg-2">Status</th>
                 </tr>
@@ -221,11 +251,24 @@ const BulkRegister = () => {
               <tbody className="scrollable-tbody">
                 {dataPreview.map((entry, index) => (
                   <tr key={index} className="row">
-                    <td className="col-12 col-sm-2 col-md-2 col-lg-2">{entry.first_name}</td>
-                    <td className="col-12 col-sm-2 col-md-2 col-lg-2">{entry.last_name}</td>
-                    <td className="col-12 col-sm-2 col-md-2 col-lg-2">{entry.username}</td>
-                    <td className="col-12 col-sm-4 col-md-4 col-lg-4">{entry.email}</td>
-                    <td className={colorValidate(registrationStatus[index])+" col-12 col-sm-2 col-md-2 col-lg-2"}>
+                    <td className="col-12 col-sm-2 col-md-2 col-lg-2">
+                      {entry.first_name}
+                    </td>
+                    <td className="col-12 col-sm-2 col-md-2 col-lg-2">
+                      {entry.last_name}
+                    </td>
+                    <td className="col-12 col-sm-2 col-md-2 col-lg-2">
+                      {entry.username}
+                    </td>
+                    <td className="col-12 col-sm-4 col-md-4 col-lg-4">
+                      {entry.email}
+                    </td>
+                    <td
+                      className={
+                        colorValidate(registrationStatus[index]) +
+                        " col-12 col-sm-2 col-md-2 col-lg-2"
+                      }
+                    >
                       {registrationStatus[index]}
                     </td>
                   </tr>
@@ -235,7 +278,7 @@ const BulkRegister = () => {
           </div>
         </div>
       )}
-      <p className={progressColor+" mt-2"}>{progressMessage}</p>
+      <p className={progressColor + " mt-2"}>{progressMessage}</p>
       {erroredData.length > 0 && (
         <div className="container mt-4">
           <button
