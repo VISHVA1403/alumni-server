@@ -10,33 +10,34 @@ const PageNavbar = () => {
   const isActive = (path) => {
     return location.pathname === path ? "active" : "";
   };
+  
 
   return (
     <Navbar bg="light" expand="lg" className="border-bottom">
-      <Navbar.Brand href="/">Alumni Portal</Navbar.Brand>
+      <Navbar.Brand href="/admin/find-people">Alumni Portal</Navbar.Brand>
       <Navbar.Toggle aria-controls="navbarNav" />
       <Navbar.Collapse id="navbarNav">
         <Nav className="mx-auto">
           <Nav.Item className={`nav-item ${isActive("/")}`}>
-            <Link className="nav-link larger-text" to="/find-people">
+            <Link className="nav-link larger-text" to="/admin/find-people">
               Find People
             </Link>
           </Nav.Item>
           <Nav.Item className={`nav-item ${isActive("/register")}`}>
-            <Link className="nav-link larger-text" to="/single-register">
+            <Link className="nav-link larger-text" to="/admin/single-register">
               Register
             </Link>
           </Nav.Item>
           <Nav.Item className={`nav-item ${isActive("/bulk-register")}`}>
-            <Link className="nav-link larger-text" to="/bulk-register">
+            <Link className="nav-link larger-text" to="/admin/bulk-register">
               Bulk Register
             </Link>
           </Nav.Item>
         </Nav>
         <NavDropdown title="More Options" id="basic-nav-dropdown">
-          <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
+          <NavDropdown.Item href="/admin/profile">Profile</NavDropdown.Item>
           <NavDropdown.Divider />
-          <NavDropdown.Item href="/logout">Logout</NavDropdown.Item>
+          <NavDropdown.Item href="/admin/logout">Logout</NavDropdown.Item>
         </NavDropdown>
       </Navbar.Collapse>
     </Navbar>

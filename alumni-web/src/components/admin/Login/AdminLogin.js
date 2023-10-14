@@ -12,7 +12,7 @@ const LoginPage = () => {
         // Check if a token exists in localStorage, and navigate to the home page if it does.
         const token = localStorage.getItem('token');
         if (token) {
-            navigate('/find-people');
+            navigate('/admin/find-people');
         }
     }, [navigate]);
 
@@ -24,7 +24,7 @@ const LoginPage = () => {
             };
 
             try {
-                const response = await fetch('/login', {
+                const response = await fetch('http://localhost:8000/admin/login/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ const LoginPage = () => {
                     localStorage.setItem('tokenExpiration', expirationDate.toISOString());
 
                     // Redirect to the home page
-                    navigate('/find-people');
+                    navigate('/admin/find-people');
                 } else {
                     // Login failed, display an error message
                     alert('Login failed. Please check your credentials.');
