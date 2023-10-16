@@ -1,160 +1,44 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image,Alert } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import Svg, { Polygon } from 'react-native-svg';
-
-
-
-
-
-// const Login = () => {
-
-
-//  const handleLogin = () => {
-//     // Add your login logic here
-//     console.log('Email:', email);
-//     console.log('Password:', password);
-//  };
-//   return (
-//    <View style={styles.container}>
-//       <View style={styles.blueBackground}>
-//       <Text style={styles.loginText}>Login</Text>
-//       </View>
-//       <View style={styles.whiteBackground}>
-      
-//         <View style={styles.icon}>
-//       <TouchableOpacity style={styles.forgotButton}>
-//         <Text style={styles.forgotButtonText}>Forgot Password?</Text>
-//       </TouchableOpacity>
-//       </View>
-//       <TouchableOpacity style={styles.button} onPress={handleLogin}>
-//         <Text style={styles.buttonText}>Login</Text>
-//       </TouchableOpacity>
-//       </View>
-//       <View style={styles.otherlogin}>
-//       <Text>-----or Login in with-----</Text>
-//       </View>
-//     </View>
-//   );
-// };
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     flexDirection: 'column',
-//     backgroundColor: 'mistyrose',
-//     justifyContent:'center',
-//   },
-//   blueBackground: {
-//     flex: 2, 
-//     backgroundColor: 'lightskyblue',
-//     borderBottomLeftRadius: 0, 
-//     borderBottomRightRadius: 300, 
-//     justifyContent: 'flex-end',
-//     alignItems: 'center',
-//   },
-//   whiteBackground: {
-//     flex: 2, 
-//     justifyContent: "flex-start",
-//     alignItems: 'center',
-//     paddingVertical:10
-    
-//   },
-
-// },
-
-//   loginText: {
-//     fontSize: 24,
-//     fontWeight: 'bold',
-//     textAlign:'auto',
-//     marginTop: 40,
-//     color: 'black',
-//     justifyContent:'center'
-//   },
-
-
-
-// },
-// button: {
-//    width: '80%',
-//    backgroundColor: '#4f83cc',
-//    borderRadius: 25,
-//    padding: 10,
-// },
-// buttonText: {
-//    color: '#fff',
-//    fontWeight: 'bold',
-//    textAlign: 'center',
-// },
-//  forgotButton: {
-//   marginBottom: 10,
-//     padding:0,
-//  },
-//  forgotButtonText: {
-//    color: 'red',
-  
-// },
-// otherlogin:{
-//    alignItems:'center',
-//    justifyContent:'flex-start',
-//    paddingBottom:400
-// }
-// });
-
-// export default Login;
-
-
-
+import { useNavigation } from '@react-navigation/native';
+import Home from '../Screens/Home';
 
 const Login = () => {
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const handleLogin=()=>{
-
+    if (email === 'user@example.com' && password === 'password') {
+      navigation.navigate(Home);
+    } 
+    else {
+      Alert.alert('Login Failed', 'Invalid email or password');
+    }
   }
   return (
      <View style={styles.container}>
        <View style={styles.background}>
          <View style={styles.triangle}>
-           <Text style={styles.loginText}>Login</Text>
          </View>
        </View>
        <View style={styles.back}>
-         {/* <View style={styles.icon}>
-         <MaterialIcons name='alternate-email' style={styles.Iconname} />
-      <TextInput
-        style={styles.input}
-        placeholder="Email" 
-        styles={{flex:1}}
-        value={email}
-        onChangeText={setEmail}
-      />
-      </View>
-       <View style={styles.icon}>
-       <Ionicons name='ios-lock-closed-outline'  style={styles.Iconname}/>
-      <TextInput
-      
-        style={styles.input}
-        placeholder="Password"
-        styles={{ flex: 1, paddingVertical: 0 }}
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry={true}
-      />
-         
-         <TouchableOpacity onPress={handleLogin}>
-            <Text style={styles.forgottext}>Forot?</Text>
-         </TouchableOpacity>
-         </View> */}
+        <Text style={{fontSize:50,bottom:120,color:'maroon',fontWeight:'700'}}>Login</Text>
           <View style={styles.icon1}>
           <MaterialIcons name='alternate-email' style={styles.Iconname} />
-          <TextInput placeholder="Username" style={{ flex: 1 }} />
+          <TextInput placeholder="Username" style={{ flex: 1 }}
+          value={email}
+          onChangeText={setEmail}
+           />
         </View>
         <View style={styles.icon2}>
           <Ionicons name='ios-lock-closed-outline' style={styles.Iconname} />
           <TextInput
             placeholder="Password"
             style={{ flex: 1, paddingVertical: 0 }}
+            value={password}
+            onChangeText={setPassword}
             secureTextEntry={true}
           />
 
@@ -180,12 +64,12 @@ const Login = () => {
   },
   background: {
      flex: 2,
-     backgroundColor: 'skyblue',
+     backgroundColor: 'wheat',
      position: 'relative',
   },
   back: {
      flex: 2,
-     backgroundColor: 'white',
+     backgroundColor: 'tan',
      justifyContent: 'flex-start',
      alignItems: 'center',
   },
@@ -207,9 +91,9 @@ const Login = () => {
      borderLeftWidth: 215,
      borderRightWidth: 215,
      borderBottomWidth: 250,
-     borderLeftColor: 'transparent',
-     borderRightColor: 'transparent',
-     borderBottomColor: 'white',
+     borderLeftColor: 'wheat',
+     borderRightColor: 'wheat',
+     borderBottomColor: 'tan',
      position: 'absolute',
      bottom: 0,
      left: 0,
@@ -225,7 +109,7 @@ const Login = () => {
      textAlign: 'center',
   },
    icon1: {
-    paddingVertical:40,
+    bottom:40,
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 1,
@@ -236,6 +120,7 @@ const Login = () => {
     marginRight:20,
   },
   icon2: {
+    bottom:40,
     paddingVertical:10,
     flexDirection: 'row',
     alignItems: 'center',
@@ -256,9 +141,10 @@ const Login = () => {
      textAlign: 'center',
  },
  button: {
+  bottom:30,
   width:'80%',
   backgroundColor: 'purple',
-  padding: 20,
+  padding: 10,
   borderRadius: 5,
   
 },
@@ -269,6 +155,7 @@ buttontext: {
   color: 'white',
 },
 otherlogin:{
+  bottom:20,
   textAlign: 'center',
    marginBottom: 30, 
    color: 'black',
