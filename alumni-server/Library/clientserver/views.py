@@ -84,3 +84,17 @@ class ExperianceListAPIView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     def get_queryset(self):
         return Experience.objects.filter(user__id=self.request.user.pk).order_by('-FromDate')
+    
+class SkillSetAPIView(generics.ListCreateAPIView):
+    serializer_class = SkillsetSerializer
+    authentication_classes =[authentication.TokenAuthentication]
+    permission_classes=[permissions.IsAuthenticated]
+
+    def create(self,request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else :
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
