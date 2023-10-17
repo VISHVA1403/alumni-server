@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 const Header=()=>{
     return(
         <View style={styles.header}>
-            <MaterialIcons name="power-settings-new" size={30} color="black" />
+            <MaterialIcons name="dashboard" size={30} color="black" />
             </View>
     )
 }
@@ -16,11 +16,10 @@ export default Header;
 
 styles=StyleSheet.create({
     header:{
-        flex:1,
         backgroundColor:'wheat',
+        flexDirection:'row',
+        flex:0.5,
         alignItems:'flex-end',
-        justifyContent:'flex-end',
-        right:20,
-        flexDirection:'row'
+        justifyContent:'flex-end'
     }
 })

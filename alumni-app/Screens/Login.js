@@ -10,7 +10,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const handleLogin=()=>{
-    if (email === 'user@example.com' && password === 'password') {
+    if (email === 'sabari@gmail.com' && password === 'password') {
       navigation.navigate(Home);
     } 
     else {
