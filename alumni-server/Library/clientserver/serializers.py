@@ -70,7 +70,7 @@ class LoginSerializer(serializers.Serializer):
 class ExperianceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Experience
-        fields = '__all__'
+        fields = ['designation','sector','companyName','FromDate','EndDate']
 
 
 
@@ -81,13 +81,12 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class SkillsetSerializer(serializers.ModelSerializer):
-    userProfile = ProfileSerializer()
     class Meta:
         model = Skillset
-        fields = '__all__'
+        fields = ['skill','level']
 
 class CertificationsSerializer(serializers.ModelSerializer):
     skill = SkillsetSerializer()
     class Meta:
         model = Certifications
-        fields = '__all__'
+        fields = ['credentialId','CertificateUrl','certificate','organizationName','description','dateOfCertification']

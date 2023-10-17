@@ -20,7 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-from clientserver.views import RegisterAPIView,LoginAPIView,ProfileAPIView
+from clientserver.views import RegisterAPIView,LoginAPIView,ProfileAPIView,ExperianceAPIView,ExperianceListAPIView
 
 
 urlpatterns = [
@@ -28,4 +28,7 @@ urlpatterns = [
     path('alumni/register/', RegisterAPIView.as_view(), name='auth_register'),
     path('alumni/login/', LoginAPIView.as_view(), name='auth_login'),
     path('alumni/profile/',ProfileAPIView.as_view(),name = 'CreteProfile'),
+    path('alumni/profile/experiance',ExperianceAPIView.as_view(),name = 'CreteExperiance'),
+    path('alumni/profile/experiance_list/',ExperianceListAPIView.as_view(),name='ListExperiance')
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
