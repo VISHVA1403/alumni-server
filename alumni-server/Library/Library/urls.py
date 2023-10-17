@@ -20,11 +20,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-from clientserver.views import RegisterAPIView,LoginAPIView
+from clientserver.views import RegisterAPIView,LoginAPIView,ProfileAPIView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('alumni/register/', RegisterAPIView.as_view(), name='auth_register'),
     path('alumni/login/', LoginAPIView.as_view(), name='auth_login'),
+    path('alumni/profile/',ProfileAPIView.as_view(),name = 'CreteProfile'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

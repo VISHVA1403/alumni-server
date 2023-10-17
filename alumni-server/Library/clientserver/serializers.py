@@ -4,7 +4,7 @@ from rest_framework.validators import UniqueValidator
 
 
 from django.contrib.auth.password_validation import validate_password
-
+from .models import Certifications,Experience,UserProfile,Posting,Skillset
 from django.contrib.auth import authenticate
 
 
@@ -56,16 +56,38 @@ class LoginSerializer(serializers.Serializer):
         username = data.get('username')
         password = data.get('password')
 
-        if username and password:
-            user = authenticate(username=username, password=password)
+        user = authenticate(username=username, password=password)
 
-            if user:
-
-
-                data['user'] = user
-            else:
-                raise serializers.ValidationError("Unable to log in with provided credentials.")
+        if user and user.is_active:
+            data['user'] = user
         else:
-            raise serializers.ValidationError("Must provide both username and password.")
+            raise serializers.ValidationError("Invalid username or password")
 
         return data
+
+
+
+class ExperianceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Experience
+        fields = '__all__'
+
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ['bloodGroup','contactNumber','profilePicture','city','state','country','pincode']
+
+
+class SkillsetSerializer(serializers.ModelSerializer):
+    userProfile = ProfileSerializer()
+    class Meta:
+        model = Skillset
+        fields = '__all__'
+
+class CertificationsSerializer(serializers.ModelSerializer):
+    skill = SkillsetSerializer()
+    class Meta:
+        model = Certifications
+        fields = '__all__'

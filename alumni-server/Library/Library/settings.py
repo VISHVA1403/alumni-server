@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'clientserver',
     'rest_framework',
     "rest_framework.authtoken",
+    # 'authtoken',
     'corsheaders',
 ]
 
@@ -50,9 +51,9 @@ INSTALLED_APPS = [
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
 }
 from datetime import timedelta
 
