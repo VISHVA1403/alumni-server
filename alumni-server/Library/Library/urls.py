@@ -1,7 +1,7 @@
 """
 URL configuration for Library project.
 
-The `urlpatterns` list routes URLs to views. For more information please see:
+The urlpatterns list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
 Examples:
 Function views
@@ -20,15 +20,22 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-from clientserver.views import RegisterAPIView,LoginAPIView,ProfileAPIView,ExperianceAPIView,ExperianceListAPIView
+from clientserver.views import *
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('alumni/register/', RegisterAPIView.as_view(), name='auth_register'),
     path('alumni/login/', LoginAPIView.as_view(), name='auth_login'),
+    path('alumni/change-password/', ChangePasswordView.as_view(), name='change-password'),
+    path('alumni/change-username/', ChangeUserName.as_view(), name='change-username'),
+
     path('alumni/profile/',ProfileAPIView.as_view(),name = 'CreteProfile'),
     path('alumni/profile/experiance',ExperianceAPIView.as_view(),name = 'CreteExperiance'),
-    path('alumni/profile/experiance_list/',ExperianceListAPIView.as_view(),name='ListExperiance')
+    path('alumni/profile/experiance_list/',ExperianceListAPIView.as_view(),name='ListExperiance'),
+
+    path('alumni/profile/certificate',CertificationsAPIView.as_view(),name = 'CreteExperiance'),
+
+
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -115,10 +115,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Alumni',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
+        'NAME': 'sql12675625',
+        'USER': 'sql12675625',
+        'PASSWORD': 'dSZVrDYrBx',
+        'HOST': 'sql12.freemysqlhosting.net',
         'PORT': '3306',
     }
 }
@@ -164,3 +164,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-mail.outlook.com'  # Outlook SMTP server
+EMAIL_PORT = 587  # Port for Outlook's SMTP server
+EMAIL_USE_TLS = True  # Use TLS encryption
+
+EMAIL_HOST_USER = 'projectalumniid@outlook.com'  # Your Outlook email address
+EMAIL_HOST_PASSWORD = 'Selvakumar@1'  # Your Outlook email password
+DEFAULT_FROM_EMAIL = 'projectalumniid@outlook.com'  # Your Outlook email address
