@@ -50,11 +50,10 @@ class RegisterAPIView(APIView):
         if serializer.is_valid():
             user = serializer.save()
             user.username =self.generate_unique_username(user.first_name, user.last_name) # type: ignore
-
-            if User.objects.filter(username=user.username).exists():
+            if User.objects.filter(username=user.username).exists(): # type: ignore
                 return Response({"error": "Username already exists."}, status=status.HTTP_400_BAD_REQUEST)
-            print(user.username)
-            user.save()
+            print(user.username) # type: ignore
+            user.save() # type: ignore
 
         
 
@@ -78,10 +77,10 @@ class ChangePasswordView(APIView):
         if serializer.is_valid():
             user = request.user
 
-            if not user.check_password(serializer.data.get('one_time_password')):
+            if not user.check_password(serializer.data.get('one_time_password')): # type: ignore
                 return Response({'one_time_password': 'Wrong password'}, status=status.HTTP_400_BAD_REQUEST)
 
-            user.set_password(serializer.data.get('new_password'))
+            user.set_password(serializer.data.get('new_password')) # type: ignore
             user.save()
             return Response({'message': 'Password changed successfully'}, status=status.HTTP_200_OK)
 
