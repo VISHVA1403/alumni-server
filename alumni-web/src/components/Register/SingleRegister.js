@@ -2,15 +2,12 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const SingleRegister = () => {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    mobileNumber: "",
-    registerNumber: "",
-    bloodGroup: "",
+   const [formData, setFormData] = useState({
+    first_name: '',
+    last_name: '',
+    username: '',
+    email: '',
   });
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,34 +19,28 @@ const SingleRegister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const response = await fetch("/single-register", {
-        method: "POST",
+      const response = await fetch('/alumni/register', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       });
-
-      if (response.ok ) {
-        // Clear form data
-        setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          mobileNumber: "",
-          registerNumber: "",
-          bloodGroup: "",
-        });
-      } else {
+  
+      if (response.ok) {
         const data = await response.json();
-        alert("Registration Failed!")
+        console.log('Registration Successful!', data);
+      } else {
+        const errorData = await response.text();
+        console.error('Registration Failed:', errorData);
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
     }
   };
+  
 
   return (
     <div className="container mt-5">
@@ -59,28 +50,42 @@ const SingleRegister = () => {
             <div className="card-body">
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label htmlFor="firstName" className="form-label">
+                  <label htmlFor="first_name" className="form-label">
                     First Name:
                   </label>
                   <input
                     type="text"
-                    id="firstName"
-                    name="firstName"
-                    value={formData.firstName}
+                    id="first_name"
+                    name="first_name"
+                    value={formData.first_name}
                     onChange={handleChange}
                     className="form-control"
                     required
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="lastName" className="form-label">
+                  <label htmlFor="last_name" className="form-label">
                     Last Name:
                   </label>
                   <input
                     type="text"
-                    id="lastName"
-                    name="lastName"
-                    value={formData.lastName}
+                    id="last_name"
+                    name="last_name"
+                    value={formData.last_name}
+                    onChange={handleChange}
+                    className="form-control"
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="username" className="form-label">
+                    Username:
+                  </label>
+                  <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    value={formData.username}
                     onChange={handleChange}
                     className="form-control"
                     required
@@ -95,48 +100,6 @@ const SingleRegister = () => {
                     id="email"
                     name="email"
                     value={formData.email}
-                    onChange={handleChange}
-                    className="form-control"
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="mobileNumber" className="form-label">
-                    Mobile Number:
-                  </label>
-                  <input
-                    type="tel"
-                    id="mobileNumber"
-                    name="mobileNumber"
-                    value={formData.mobileNumber}
-                    onChange={handleChange}
-                    className="form-control"
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="registerNumber" className="form-label">
-                    Register Number:
-                  </label>
-                  <input
-                    type="text"
-                    id="registerNumber"
-                    name="registerNumber"
-                    value={formData.registerNumber}
-                    onChange={handleChange}
-                    className="form-control"
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="bloodGroup" className="form-label">
-                    Blood Group:
-                  </label>
-                  <input
-                    type="text"
-                    id="bloodGroup"
-                    name="bloodGroup"
-                    value={formData.bloodGroup}
                     onChange={handleChange}
                     className="form-control"
                     required

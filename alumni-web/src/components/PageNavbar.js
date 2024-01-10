@@ -13,7 +13,7 @@ const PageNavbar = () => {
 
   return (
     <Navbar bg="light" expand="lg" className="border-bottom">
-      <Navbar.Brand href="/find-people">Alumni Portal</Navbar.Brand>
+      <Navbar.Brand href="/">Alumni Portal</Navbar.Brand>
       <Navbar.Toggle aria-controls="navbarNav" />
       <Navbar.Collapse id="navbarNav">
         <Nav className="mx-auto">
@@ -36,7 +36,7 @@ const PageNavbar = () => {
         <NavDropdown title="More Options" id="basic-nav-dropdown">
           <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
           <NavDropdown.Divider />
-          <NavDropdown.Item href="/logout">logout</NavDropdown.Item>
+          <NavDropdown.Item href="/logout">Logout</NavDropdown.Item>
         </NavDropdown>
       </Navbar.Collapse>
     </Navbar>
