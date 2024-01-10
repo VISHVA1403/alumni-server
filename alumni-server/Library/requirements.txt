@@ -85,4 +85,5 @@ Pillow==10.0.1
 pycparser==2.21
 Pygments==2.16.1
 PyJWT==2.8.0
+_tkinter
 pyparsing==3.1.1
