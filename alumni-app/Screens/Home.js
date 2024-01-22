@@ -4,7 +4,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from "@react-navigation/native";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer"
-
 const Home = () => {
    
     return (
@@ -23,11 +22,11 @@ export default Home;
 const styles=StyleSheet.create({
     container:{
         flex:1,
-        backgroundColor:'wheat',
+        backgroundColor:'white',
     },
     other:{
         flex:10,
-        backgroundColor:'tan',
+        backgroundColor:'white',
     },
     
     

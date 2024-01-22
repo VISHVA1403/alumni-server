@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from "@react-navigation/native";
 
+
+
 const Footer = () => {
   const navigation = useNavigation();
 
@@ -35,7 +37,7 @@ const Footer = () => {
         <MaterialIcons name="search" size={40} color="black" />
       </TouchableOpacity>
       <TouchableOpacity onPress={handlePost}>
-        <MaterialIcons name="post-add" size={40} color="black" />
+      <MaterialIcons name="add" size={40} color="black" />
       </TouchableOpacity>
       <TouchableOpacity onPress={handleNotifications}>
         <MaterialIcons name="notifications" size={40} color="black" />
@@ -52,7 +54,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: 'white',
+    backgroundColor: 'skyblue',
     height: 60,
   },
 });

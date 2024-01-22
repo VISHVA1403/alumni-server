@@ -4,32 +4,61 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { useNavigation } from '@react-navigation/native';
 import Home from '../Screens/Home';
+import * as Keychain from 'react-native-keychain';
 
 const Login = () => {
   const navigation = useNavigation();
-  const [email, setEmail] = useState('');
+  const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
-  const handleLogin=()=>{
-    if (email === 'sabari@gmail.com' && password === 'password') {
-      navigation.navigate(Home);
-    } 
-    else {
-      Alert.alert('Login Failed', 'Invalid email or password');
+  const handleLogin = async ()=>{
+  //   if (email === 'sabari@gmail.com' && password === 'password') {
+  //     navigation.navigate(Home);
+  //   } 
+  //   else {
+  //     Alert.alert('Login Failed', 'Invalid email or password');
+  //   }
+  // }
+
+    try {
+      const response = await fetch('https://d315-121-200-52-130.ngrok-free.app/alumni/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+  
+      if (response.ok) {
+        const responseData = await response.json();
+        const { token } = responseData;
+
+       console.log(responseData)
+     //   await Keychain.setGenericPassword('token', token);
+        navigation.navigate(Home);
+        
+      } else {
+        Alert.alert('Login Failed', 'Invalid username or password');
+      }
     }
-  }
+    catch (error) {
+      console.error('Login error:', error);
+      Alert.alert('Login Error', 'An error occurred while logging in');
+    }
+  };
+
   return (
      <View style={styles.container}>
        <View style={styles.background}>
-         <View style={styles.triangle}>
-         </View>
+        <View style={styles.triangle}>
+        </View>
        </View>
        <View style={styles.back}>
         <Text style={{fontSize:50,bottom:120,color:'maroon',fontWeight:'700'}}>Login</Text>
           <View style={styles.icon1}>
           <MaterialIcons name='alternate-email' style={styles.Iconname} />
           <TextInput placeholder="Username" style={{ flex: 1 }}
-          value={email}
-          onChangeText={setEmail}
+          value={username}
+          onChangeText={setusername}
            />
         </View>
         <View style={styles.icon2}>
@@ -51,7 +80,7 @@ const Login = () => {
             <Text style={styles.buttontext}>Login</Text>
           </TouchableOpacity>
           <Text style={styles.otherlogin}>or, login with...</Text>
-        
+          
        </View>
      </View>
   );
@@ -64,12 +93,12 @@ const Login = () => {
   },
   background: {
      flex: 2,
-     backgroundColor: 'wheat',
+     backgroundColor: 'blue',
      position: 'relative',
   },
   back: {
      flex: 2,
-     backgroundColor: 'tan',
+     backgroundColor: 'white',
      justifyContent: 'flex-start',
      alignItems: 'center',
   },
@@ -88,12 +117,12 @@ const Login = () => {
       height: 0,
      backgroundColor: 'transparent',
      borderStyle: 'solid',
-     borderLeftWidth: 215,
-     borderRightWidth: 215,
+     borderLeftWidth: 200,
+     borderRightWidth: 212,
      borderBottomWidth: 250,
-     borderLeftColor: 'wheat',
-     borderRightColor: 'wheat',
-     borderBottomColor: 'tan',
+     borderLeftColor: 'blue',
+     borderRightColor: 'blue',
+     borderBottomColor: 'white',
      position: 'absolute',
      bottom: 0,
      left: 0,
@@ -166,3 +195,5 @@ otherlogin:{
  });
  
  export default Login;
+
+

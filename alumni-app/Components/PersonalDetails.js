@@ -8,35 +8,36 @@ import { login } from "../api_manager/Login_API";
 const PersonalDetails=()=>{
     return(
                 
-        <View style={{paddingVertical:10}}>
+        <View style={{bottom:0}}> 
         <View style={styles.personaldetails}>
-        <Icon name="phone" size={24} color="black" />
-        <Text style={{fontSize:24}}> :</Text>
-        <Text style={{fontSize:24}}>MobileNumber</Text>
+        <Icon name="phone" size={24} color="green" />
+        <Text style={{fontSize:24}}>  : </Text>
+        <Text style={{fontSize:20,fontWeight:'bold'}}>MobileNumber</Text>
         </View>
         <View style={styles.personaldetails}>
-        <Icon name="envelope" size={24} color="black" />
-        <Text style={{fontSize:24}}> :</Text>
-        <Text style={{fontSize:24}}>MailId  </Text>
+        <Icon name="envelope" size={24} color="blue" />
+        <Text style={{fontSize:24}}> : </Text>
+        <Text style={{fontSize:20,fontWeight:'bold'}}>MailId  </Text>
         </View>
         <View style={styles.personaldetails}>
         <Icon name="calendar" size={24} color="black" />
-        <Text style={{fontSize:24}}> :</Text>
-        <Text style={{fontSize:24}}>Date of Birth  </Text>
+        <Text style={{fontSize:24}}> : </Text>
+        <Text style={{fontSize:20,fontWeight:'bold'}}>Date of Birth  </Text>
         </View>
         <View style={styles.personaldetails}>
         <Icon name="tint" size={24} color="red" />
-        <Text style={{fontSize:24}}> :</Text>
-        <Text style={{fontSize:24}}>Blood Group  </Text>
+        <Text style={{fontSize:24}}>  : </Text>
+        <Text style={{fontSize:20,fontWeight:'bold'}}>Blood Group  </Text>
         </View>
         <View style={{...styles.personaldetails, borderBottomWidth: 3}}>
-        <Icon1 name="map-marker" size={24} color="red" />
-        <Text style={{fontSize: 24}}> :</Text>
-        <Text style={{fontSize: 24, paddingVertical: 5}}>City,State,Country,Pincode</Text>
+        <Icon1 name="map-marker" size={24} color="brown" />
+        <Text style={{fontSize: 24}}>  : </Text>
+        <Text style={{fontSize: 20, paddingVertical: 5,fontWeight:'bold'}}>City,State,Country,Pincode</Text>
         </View>
         </View>
     )
 }
+
 
 export default PersonalDetails
 
