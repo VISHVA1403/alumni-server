@@ -1,169 +1,153 @@
-import React,{useState} from "react";
-import { Text,View,Button,TouchableOpacity,StyleSheet,Modal,TextInput ,FlatList} from "react-native";
-import Icon1 from 'react-native-vector-icons/MaterialIcons';
+import React, { useState ,useEffect} from 'react';
+import { View, Text, TextInput, Button, StyleSheet,TouchableOpacity } from 'react-native';
+import { getTokenFromStorage } from '../Screens/auth';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { fetchUserExperience } from '../api_manager/UserExperience';
+import { useNavigation } from '@react-navigation/native';
+import ShowExperience from '../Screens/ShowExperience';
+import url from '../Screens/Entry'
+import { Alert } from 'react-native';
+const Experience = () => {
+  const [showInputs, setShowInputs] = useState(false);
+  const [designation, setDesignation] = useState('');
+  const [companyName, setcompanyName] = useState('');
+  const [FromDate, setFromDate] = useState('');
+  const [EndDate, setEndDate] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const navigation=useNavigation()
+  
+  
+  const showExp=()=>{
+    navigation.navigate(ShowExperience)
+  }
 
+  const handleSubmit = async () => {
+    try {
+      const token = await getTokenFromStorage();
+      const response = await fetch('https://1a5c-121-200-52-130.ngrok-free.app/alumni/experiences/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${token}`, 
+        },
+        body: JSON.stringify({
+          designation,
+          companyName,
+          FromDate,
+          EndDate,
+        }),
+      });
 
-const Experience=()=>{
-
-    const [showExperience, setShowExperience] = useState(false);
-  const [experience, setExperience] = useState([]);
-  const [newExperience, setNewExperience] = useState({ Organisation: '', Domain: '', Location: '', Period: '' });
-
-  const handleSaveExperience = () => {
-    if (newExperience.Organisation && newExperience.Domain && newExperience.Location && newExperience.Period) {
-      setExperience([...experience, newExperience]);
-      setNewExperience({ Organisation: '', Domain: '', Location: '', Period: '' });
-      setShowExperience(false);
+      if (response.ok) {
+        console.log('Experience added successfully');
+        setDesignation('');
+        setcompanyName('');
+        setFromDate('');
+        setEndDate('');
+        setShowInputs(false);
+        setSuccessMessage('Experience added successfully');
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 2000);
+      } else {
+        console.error('Failed to add experience. Check the API response.');
+      }
+    } catch (error) {
+      console.error('An error occurred while adding experience:', error);
     }
   };
-
-  const handleDeleteExperience = (index) => {
-    const updatedExperience = [...experience];
-    updatedExperience.splice(index, 1);
-    setExperience(updatedExperience);
+  const handleCancel = () => {
+    setShowInputs(false);
+    setDesignation('');
+    setcompanyName('');
+    setFromDate('');
+    setEndDate('');
   };
 
-  const handleCloseExperience = () => {
-    setNewExperience({ Organisation: '', Domain: '', Location: '', Period: '' });
-    setShowExperience(false);
-  };
+  return (
 
-    return(
-        <View>
-        <View style={styles.title}>
-          <Text style={styles.titletext}>Experience:</Text>
-          <TouchableOpacity onPress={() => setShowExperience(true)}>
-            <Text style={styles.editButtonText}>ADD</Text>
+    <View style={styles.container}>
+      <View style={{ flexDirection: 'row',backgroundColor:'#F6F6F6' }}>
+        <TouchableOpacity  onPress={showExp} >
+         <Text style={{ fontWeight: 'bold', fontSize: 20,right:10,bottom:10 }}>EXPERIENCE</Text>
           </TouchableOpacity>
+          {showInputs ? (
+          <TouchableOpacity onPress={handleCancel}>
+            <View style={{right:25}}>
+            <Text style={{ fontWeight: 'bold', fontSize: 20, left: 220, color: 'red', bottom: 10 }}>Cancel</Text></View>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => setShowInputs(true)}>
+            <Text style={{ fontWeight: 'bold', fontSize: 20, left: 220, color: 'blue', bottom: 10 }}>Add</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+      {successMessage !== '' && (
+        <View style={styles.successMessage}>
+          <Text style={{ color: 'green', fontWeight: 'bold' }}>{successMessage}</Text>
         </View>
-        <View style={{ flexDirection: 'column', borderBottomWidth: 3 }}>
-          {experience.map((exp, index) => (
-            <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-              <Text style={{ fontSize: 20 , flex:1 }}>{exp.Organisation}</Text>
-              <Text style={{ fontSize: 20 , flex:1 }}>{exp.Domain}</Text>
-              <Text style={{ fontSize: 20 , flex:1  }}>{exp.Location}</Text>
-              <Text style={{ fontSize: 20 , flex:1 }}>{exp.Period}</Text>
-              <TouchableOpacity onPress={() => handleDeleteExperience(index)}>
-                <Icon1 name="delete" size={24} />
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
-        <View style={styles.buttonview1}>
-        <TouchableOpacity 
-        onPress={true}
-        style={styles.button}
-        ><Text style={{color:'white'}}>My Post</Text></TouchableOpacity>
-        <TouchableOpacity 
-        onPress={true}
-        style={styles.button}
-        ><Text style={{color:'white'}}>Tag</Text></TouchableOpacity>
-     </View>  
+      )}
 
-     <Modal
-        animationType="slide"
-        transparent={true}
-        visible={showExperience}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <TextInput
-              placeholder='Organisation'
-              value={newExperience.Organisation}
-              onChangeText={(text) => setNewExperience({ ...newExperience, Organisation: text })}
-            />
-            <TextInput
-              placeholder='Domain'
-              value={newExperience.Domain}
-              onChangeText={(text) => setNewExperience({ ...newExperience, Domain: text })}
-            />
-            <TextInput
-              placeholder='Location'
-              value={newExperience.Location}
-              onChangeText={(text) => setNewExperience({ ...newExperience, Location: text })}
-            />
-            <TextInput
-              placeholder='Period'
-              value={newExperience.Period}
-              onChangeText={(text) => setNewExperience({ ...newExperience, Period: text })}
-            />
-            <Button title="Save" onPress={handleSaveExperience} />
-            <Button title="Cancel" onPress={handleCloseExperience} />
-          </View>
-        </View>
-      </Modal>
-     </View>
-    )
-}
-export default Experience
 
-const styles=StyleSheet.create({
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-       
-      },
-      modalContent: {
-        backgroundColor: 'white',
-        padding: 20,
-        borderRadius: 10,
-        width: 300,
-      },
-      editButton: {
-        position: 'relative',
-        bottom: 220, 
-        alignSelf: 'center',
-        padding: 10,
-        left:180,
-      },
-      editButtonText: {
-        color: 'blue',
-        fontSize:15,
-        right:0,
-        fontWeight:'800',
-        
-    },
-    title:{
-        flexDirection:'row',
-        justifyContent:'space-between',
-        alignItems:'flex-end',
-        paddingVertical:5,
-      },
-      titletext:{
-        fontSize:20,
-        fontWeight:'900',
-      },
-      buttonview:{
-        flexDirection:'row',
-        height:30,
-        width:'100%',
-        borderRadius:5,
-        bottom:20,
-      },
-      buttonview1:{
-        flexDirection:'row',
-        height:40,
-        width:'100%',
-        borderRadius:5,
-        
-      },
-      experienceview:{
-        justifyContent:'space-between',
-       borderBottomWidth:1,
-        width:'100%',
-        //paddingVertical:10,
-        borderBottomWidth:2,
-      },
-      experienceRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        borderBottomWidth: 3,
-        //paddingVertical: 10,
-      },
-      experienceItem: {
-        flex: 1,
-        fontSize: 20,
-      },
-})
+
+    {showInputs && (
+      <View>
+      <Text>Designation:</Text>
+      <TextInput
+        style={styles.input}
+        value={designation}
+        onChangeText={setDesignation}
+        placeholder='SENIOR DEVELOPER'
+      />
+
+      <Text>companyName:</Text>
+      <TextInput
+        style={styles.input}
+        value={companyName}
+        onChangeText={setcompanyName}
+        placeholder='HCL'
+      />
+
+      <Text>From Date:</Text>
+      <TextInput
+        style={styles.input}
+        value={FromDate}
+        onChangeText={setFromDate}
+        placeholder='YYYY-MM-DD'
+      />
+
+      <Text>To Date:</Text>
+      <TextInput style={styles.input} value={EndDate} onChangeText={setEndDate} placeholder='YYYY-MM-DD' />
+
+      <Button title="Add Experience" onPress={handleSubmit} />
+      </View>
+    )}
+        </View>
+
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 8,
+    position: 'relative', 
+    backgroundColor:'#F6F6F6',
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 16,
+    padding: 8,
+  },
+  successMessage: {
+    backgroundColor: 'lightgreen',
+    padding: 8,
+    marginTop: 0, 
+    position: 'absolute', 
+    width: '80%', 
+    bottom:550,
+  },
+});
+
+export default Experience;

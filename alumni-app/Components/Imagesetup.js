@@ -1,25 +1,48 @@
-import React from 'react'      
+import React ,{useState,useEffect}from 'react'      
 import { Text,View,StyleSheet,Image,TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import {fetchUserProfile} from "../api_manager/UserProfile"
 const Imagesetup=()=>{
+
+  const [userDetails, setUserDetails] = useState(null);
+      
+        useEffect(() => {
+          const fetchUserProfileData = async () => {
+            try {
+              const userProfileData = await fetchUserProfile();
+              //console.log(userProfileData)
+              setUserDetails(userProfileData);
+            } catch (error) {
+              console.error('Error fetching user profile data:', error);
+            }
+          };
+      
+          fetchUserProfileData();
+          console.log('Cover Photo URL:', userDetails?.profilePhoto);
+        }, []);
+
+        const serverBaseUrl = 'https://1a5c-121-200-52-130.ngrok-free.app';
     return(
       <View>
+        
       <Image 
       source={require('../images/coverphoto.jpg')}
       style={styles.coverphoto}
       />
       <Image 
-      source={require('../images/profilephoto.jpg')}
+    //  source={{ uri: userDetails?.profilePicture || 'https://example.com/defaultCoverPhoto.jpg' }}
+      source={{ uri: `${serverBaseUrl}${userDetails?.profilePicture}` }}
       style={styles.profilephoto}
       />
       <TouchableOpacity onPress={true}>
-      <Icon name='camera' size={25} color='black' style={{left:60,top:25}}/>
+      <MaterialIcons name='circle-notifications' size={25} color='white' style={{left:340,bottom:170}}/>
       </TouchableOpacity>
        <TouchableOpacity
       style={styles.editButton}
       onPress={true}
     >
-      <Text style={styles.editButtonText}>Edit</Text>
+      <Text style={styles.editButtonText}>Profile</Text>
       </TouchableOpacity>
            
     
@@ -36,13 +59,15 @@ const Imagesetup=()=>{
       height:200,
   },
   profilephoto: {
-    width:150, 
-    height: 150,
+    width:130, 
+    height: 130,
     borderRadius: 75,
     borderWidth: 3,
-    borderColor: 'red',
+    borderColor: 'white',
     position: 'absolute',
-    bottom:30,
+    top:120,
+    left:10,
+
   },
   editButton: {
    position: 'relative',
@@ -50,12 +75,16 @@ const Imagesetup=()=>{
    alignSelf: 'center',
    padding: 10,
    left:180,
+   
  },
  editButtonText: {
-   color: 'blue',
+   color: 'white',
    fontSize:20,
-   right:40,
-          
+   right:200,
+   fontWeight:'bold',
+   top:20,
+   right:180, 
+   //fontFamily:'poppins',         
       },
 
         })

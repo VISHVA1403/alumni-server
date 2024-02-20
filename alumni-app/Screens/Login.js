@@ -4,47 +4,37 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { useNavigation } from '@react-navigation/native';
 import Home from '../Screens/Home';
-import * as Keychain from 'react-native-keychain';
+import { saveTokenToStorage, getTokenFromStorage, removeTokenFromStorage } from './auth';
+import { fetchUserProfile } from "../api_manager/UserProfile";
+import { Login_URL } from '../api_manager/Api';
 
 const Login = () => {
   const navigation = useNavigation();
   const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
-  const handleLogin = async ()=>{
-  //   if (email === 'sabari@gmail.com' && password === 'password') {
-  //     navigation.navigate(Home);
-  //   } 
-  //   else {
-  //     Alert.alert('Login Failed', 'Invalid email or password');
-  //   }
-  // }
-
-    try {
-      const response = await fetch('https://d315-121-200-52-130.ngrok-free.app/alumni/login/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
+  const handleLogin = async ()=>{  
+  try {
+    const response = await fetch('https://1a5c-121-200-52-130.ngrok-free.app/alumni/login/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
   
-      if (response.ok) {
-        const responseData = await response.json();
-        const { token } = responseData;
-
-       console.log(responseData)
-     //   await Keychain.setGenericPassword('token', token);
+    if (response.ok) {
+      
+      const responseData = await response.json();
+      await saveTokenToStorage(responseData); 
+      const userDetails = await fetchUserProfile();
         navigation.navigate(Home);
-        
-      } else {
-        Alert.alert('Login Failed', 'Invalid username or password');
-      }
-    }
-    catch (error) {
-      console.error('Login error:', error);
-      Alert.alert('Login Error', 'An error occurred while logging in');
-    }
-  };
+    } else {
+      console.error('Login failed. Check credentials.');
+    }}
+     catch (error) {
+    console.error('An error occurred during login:', error);
+  } };
+  
 
   return (
      <View style={styles.container}>
@@ -93,7 +83,7 @@ const Login = () => {
   },
   background: {
      flex: 2,
-     backgroundColor: 'blue',
+     backgroundColor: 'white',
      position: 'relative',
   },
   back: {
@@ -117,11 +107,11 @@ const Login = () => {
       height: 0,
      backgroundColor: 'transparent',
      borderStyle: 'solid',
-     borderLeftWidth: 200,
-     borderRightWidth: 212,
-     borderBottomWidth: 250,
-     borderLeftColor: 'blue',
-     borderRightColor: 'blue',
+     borderLeftWidth: 197,
+     borderRightWidth: 197,
+     borderBottomWidth: 370,
+     borderLeftColor: 'skyblue',
+     borderRightColor: 'mistyrose',
      borderBottomColor: 'white',
      position: 'absolute',
      bottom: 0,

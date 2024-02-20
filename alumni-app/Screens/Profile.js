@@ -12,18 +12,20 @@ import Imagesetup from '../Components/Imagesetup';
 import Skillset from '../Components/skillset';
 import Experience from '../Components/Experienceset';
 import User from '../Components/username'
+import Certifications from '../Components/Certifications';
+
 const Profile=()=>{
   return( 
     <View style={styles.container}>
-        <Header/>
+       {/* <Header/> */}
         <View style={{flex:10}}>
         <ScrollView style={styles.background}>
             <Imagesetup/>
-            <Follow/>
-            <User/>
+            {/* <Follow/> */}
+             <User/> 
             <PersonalDetails/>
-            <Skillset/>
             <Experience/>
+            <Certifications/>
         </ScrollView>
         </View>
         <Footer/>

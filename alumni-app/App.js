@@ -7,9 +7,13 @@ import Login from './Screens/Login/'
 import Home from './Screens/Home/';
 import Profile from './Screens/Profile/'
 import Entry from './Screens/Entry/';
+import ShowExperience from './Screens/ShowExperience';
+import EditProfile from './Screens/editProfile';
 
 export default function App() {
   const Stack = createNativeStackNavigator();
+  
+  
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Entry">
@@ -17,6 +21,9 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} options={{headerShown:false}} />
         <Stack.Screen name="Home" component={Home}  options={{headerShown:false}} />
         <Stack.Screen name="Profile" component={Profile}  options={{headerShown:false}} />
+        <Stack.Screen name="ShowExperience" component={ShowExperience}  options={{headerShown:false}} />
+        <Stack.Screen name="EditProfile" component={EditProfile}  options={{headerShown:false}} />
+
 
       </Stack.Navigator>
     </NavigationContainer>
