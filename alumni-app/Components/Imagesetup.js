@@ -22,7 +22,7 @@ const Imagesetup=()=>{
           console.log('Cover Photo URL:', userDetails?.profilePhoto);
         }, []);
 
-        const serverBaseUrl = 'https://1a5c-121-200-52-130.ngrok-free.app';
+        const serverBaseUrl = ' http://127.0.0.1:8000/';
     return(
       <View>
         

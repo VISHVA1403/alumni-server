@@ -8,7 +8,7 @@ import { API_BASE_URL } from "./Api";
   
 //console.log('Access Token:', token);
 
-    const response = await fetch('https://1a5c-121-200-52-130.ngrok-free.app/alumni/profile/', {
+    const response = await fetch(' http://127.0.0.1:8000/alumni/profile/', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

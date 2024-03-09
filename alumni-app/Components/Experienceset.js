@@ -24,7 +24,7 @@ const Experience = () => {
   const handleSubmit = async () => {
     try {
       const token = await getTokenFromStorage();
-      const response = await fetch('https://1a5c-121-200-52-130.ngrok-free.app/alumni/experiences/', {
+      const response = await fetch(' http://127.0.0.1:8000/alumni/experiences/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

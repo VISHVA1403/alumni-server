@@ -18,6 +18,40 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from clientserver.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('alumni/register/', RegisterAPIView.as_view(), name='auth_register'),
+    path('alumni/login/', LoginAPIView.as_view(), name='auth_login'),
+    path('alumni/change-password/', ChangePasswordView.as_view(), name='change-password'),
+    path('alumni/change-username/', ChangeUserName.as_view(), name='change-username'),
+    path('alumni/userid/<int:user_id>/', GetUsernameByUserId.as_view(), name='get-username'),
+
+    path('alumni/profile/',ProfileAPIView.as_view(),name = 'CreteProfile'),
+    path('alumni/profiles/<str:username>/', othersProfile.as_view(), name='profile-detail'),
+    path('alumni/profiles/<int:user_id>/', UserProfileView.as_view(), name='user-profile'),
+
+
+
+    # path('alumni/profile/experiance/',ExperienceAPIView.as_view(),name = 'CreteExperiance'),
+    # # path('alumni/profile/experiance_list/',ExperianceListAPIView.as_view(),name='ListExperiance'),
+
+    path('alumni/experiences/', ExperienceAPIView.as_view(), name='experience-list'),
+    path('alumni/experiences/<str:username>/', ExperienceAPIView.as_view(), name='experience-detail'),
+
+    path('alumni/certifications/', CertificationsAPIView.as_view(), name='certification-list'),
+    path('alumni/certifications/<str:username>/', CertificationsAPIView.as_view(), name='certification-detail'),
+
+
+    path('alumni/search/', SearchAPIView.as_view(), name='search'),
+    # path('alumni/search/', SearchView.as_view(), name='search'),
+
+
+    path('postings/', PostingList.as_view(), name='posting-list'),
+    path('postings/<int:pk>/', PostingDetail.as_view(), name='posting-detail'),
+
+
+  
+    # path('community/', include('communitychat.urls')),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
