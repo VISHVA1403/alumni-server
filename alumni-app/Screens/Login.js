@@ -14,25 +14,25 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const handleLogin = async ()=>{  
   try {
-    const response = await fetch('https://1a5c-121-200-52-130.ngrok-free.app/alumni/login/', {
+    const response = await fetch('http://127.0.0.1:8000/alumni/login/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ username, password }),
     });
-  
     if (response.ok) {
-      
       const responseData = await response.json();
       await saveTokenToStorage(responseData); 
-      const userDetails = await fetchUserProfile();
+    //  const userDetails = await fetchUserProfile();
         navigation.navigate(Home);
     } else {
       console.error('Login failed. Check credentials.');
     }}
      catch (error) {
-    console.error('An error occurred during login:', error);
+      console.error('An error occurred during login:');
+  console.error('Error message:', error.message); // Log the error message
+  console.error('Error stack:', error.stack); 
   } };
   
 

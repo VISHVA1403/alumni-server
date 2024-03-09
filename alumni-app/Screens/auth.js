@@ -1,8 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import url from'./Entry'
 
- export const LOGIN_URL = "https://1a5c-121-200-52-130.ngrok-free.app/alumni/login/";
- export const AUTH_URL = "https://1a5c-121-200-52-130.ngrok-free.app/alumni/login/";
+ export const LOGIN_URL = " http://127.0.0.1:8000/alumni/login/";
+ export const AUTH_URL = " http://127.0.0.1:8000/alumni/login/";
 
 export const saveTokenToStorage = async (token) => {
   try {
